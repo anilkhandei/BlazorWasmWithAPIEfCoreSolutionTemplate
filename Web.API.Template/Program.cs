@@ -1,7 +1,19 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//Allow CORS
+string AllowBlazorWasm = "AllowBlazorWasm";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowBlazorWasm,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:7243")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
 
+                      });
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -17,6 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(AllowBlazorWasm);
 
 app.UseAuthorization();
 
