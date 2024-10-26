@@ -1,0 +1,39 @@
+﻿@using SharedLibraryTemplate.Models
+@typeparam T
+<div class="mb-3">
+    @if (RecipeList != null)
+    {
+        <select @onchange="@HandleSelect" class="form-select" aria-label="Default select example">
+            <option selected disabled>Select a recipe</option>
+            @foreach (Recipe recipe in RecipeList.results)
+            {
+                <option value="@recipe.id">@recipe.title</option>
+            }
+        </select>
+        if (RecipeList.results==null || RecipeList.results.Length<0)
+        {
+            <p>No results found</p>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public RecipeList RecipeList { get; set; }
+    [Parameter]
+    public EventCallback<T> OnSelect { get; set; }
+
+    private async Task HandleSelect(ChangeEventArgs e)
+    {
+        var selectedRecipe = RecipeList.results.FirstOrDefault(r => r.id.ToString() == e.Value.ToString());
+        if (selectedRecipe!=null)
+        {
+            await OnSelect.InvokeAsync((T)Convert.ChangeType(selectedRecipe, typeof(Recipe)));
+        }
+    }
+
+    public void ClearList()
+    {
+        RecipeList = null;
+    }
+}

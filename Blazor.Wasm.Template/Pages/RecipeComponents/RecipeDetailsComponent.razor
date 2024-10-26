@@ -1,0 +1,47 @@
+﻿@using SharedLibraryTemplate.Models
+<div class="card text-center mb-auto">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link " aria-current="@IsCard1Current" @onclick="@(_=>ActivateCard(1))" href="#">Summary</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="@IsCard2Current" @onclick="@(_=>ActivateCard(2))" href="#">Ingredients</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="@IsCard3Current" @onclick="@(_=>ActivateCard(3))" href="#">Recipe</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body" style="width: 50rem;">
+        <div class="card">
+            <img src="@recipeDetails.image" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@recipeDetails.title</h5>
+                <p class="card-text">@recipeDetails.summary</p>
+                <p class="card-text"><small class="text-muted">Credits: @recipeDetails.creditsText</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public RecipeDetails recipeDetails { get; set; }
+
+    private bool IsCard1Current;
+    private bool IsCard2Current;
+    private bool IsCard3Current;
+
+
+    private void ActivateCard(int id)
+    {
+        _=id switch
+        {
+            1 => IsCard1Current = true,
+            2 => IsCard2Current = true,
+            3 => IsCard3Current = true,
+            _ => throw new ArgumentOutOfRangeException(nameof(id), $"Not expected card number {id}")
+        };
+    }
+
+}

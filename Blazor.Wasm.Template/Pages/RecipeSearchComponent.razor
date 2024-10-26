@@ -1,0 +1,24 @@
+﻿@typeparam T
+
+<h3>Search for a recipe</h3>
+
+<div class="mb-3">
+    <input type="text" id="txtSearchBox" @bind-value="@SearchText" />
+    <button type="button" class="btn btn-primary" id="btnSearch" onclick="@HandleSearch">Search</button>
+</div>
+
+
+@code {
+    [Parameter]
+    public EventCallback<T> OnSearch { get; set; }
+    private string SearchText { get; set; }
+    private async Task HandleSearch()
+    {
+        await OnSearch.InvokeAsync((T)Convert.ChangeType(SearchText, typeof(T)));
+    }
+    public void ClearSearch()
+    {
+        SearchText = string.Empty;
+    }
+
+}

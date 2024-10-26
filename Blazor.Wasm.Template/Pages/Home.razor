@@ -1,7 +1,77 @@
 ﻿@page "/"
+@using Blazor.Wasm.Template.Pages.RecipeComponents
+@using Blazor.Wasm.Template.Services
+@using SharedLibraryTemplate.Models
+@inject IRecipesService recipesService
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (!string.IsNullOrWhiteSpace(Error))
+{
+    <div class="alert alert-danger" role="alert">
+        @Error
+    </div>
+}
+<RecipeSearchComponent @ref="searchComponent" OnSearch="@HandleSearch" T="string" />
 
-Welcome to your new app.
+@if (RecipesList !=null)
+{
+    <RecipeListComponent @ref="recipeListComponent" OnSelect="@(selection=> HandleRecipeSelection(selection))" T="Recipe" RecipeList="RecipesList" />
+
+   
+}
+@if (recipeDetails!=null)
+{
+    <RecipeDetailsComponent recipeDetails="recipeDetails"></RecipeDetailsComponent>
+}
+
+@code{
+    private RecipeList RecipesList;
+    private RecipeListComponent<Recipe> recipeListComponent;
+    private Recipe SelectedRecipe;
+    private string Error;   
+    private RecipeSearchComponent<string> searchComponent;
+    private RecipeDetails recipeDetails;
+
+    private async Task HandleSearch(string searchText)
+    {
+        try
+        {
+            ClearState();
+            RecipesList = await recipesService.Search(searchText);
+            if(RecipesList.results.Length==0)
+            {
+                Error = "No recipes found, try a different one?";
+            }
+
+        }
+        catch(Exception ex)
+        {
+            Error = ex.Message;
+        }
+    }
+    private void ClearState()
+    {
+        Error = null;
+        RecipesList = null;
+        recipeDetails = null;
+    }
+    private async Task HandleRecipeSelection(Recipe selection)
+    {
+        try
+        {
+            Console.WriteLine(selection);
+            recipeDetails = await recipesService.GetRecipeDetails(selection.id);
+        }
+        catch(Exception ex)
+        {
+            Error = ex.Message;
+        }
+    }
+
+    private void clearSearch()
+    {
+        searchComponent.ClearSearch();
+        recipeListComponent.ClearList();
+    }
+}

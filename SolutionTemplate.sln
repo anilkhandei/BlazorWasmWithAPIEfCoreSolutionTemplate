@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibraryTemplate", "SharedLibraryTemplate\SharedLibraryTemplate.csproj", "{35D8B1DA-1386-477B-AC99-3816ACF9D8B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibraryTemplate", "SharedLibraryTemplate\SharedLibraryTemplate.csproj", "{35D8B1DA-1386-477B-AC99-3816ACF9D8B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.API.Template", "Web.API.Template\Web.API.Template.csproj", "{0F333327-48C4-4E1E-B809-2CBF0F2035B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.API.Template", "Web.API.Template\Web.API.Template.csproj", "{0F333327-48C4-4E1E-B809-2CBF0F2035B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Wasm.Template", "Blazor.Wasm.Template\Blazor.Wasm.Template.csproj", "{88678246-400A-48C6-8CEE-3D1CCFA39EDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Wasm.Template", "Blazor.Wasm.Template\Blazor.Wasm.Template.csproj", "{88678246-400A-48C6-8CEE-3D1CCFA39EDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
