@@ -1,11 +1,22 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SharedLibraryTemplate.Models;
 using System.Text;
+using Web.API.Template.Data;
+using Web.API.Template.Data.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//read configs from appsettings
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddDefaultTokenProviders();
 
 
 //add jwt authentication
@@ -24,8 +35,8 @@ AddJwtBearer(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer="selfIssuer",
-        ValidAudience="selfAudience",
+        ValidIssuer= jwtSettings?.Issuer ?? throw new ArgumentNullException("Jwt:Issuer"),
+        ValidAudience= jwtSettings?.Audience ?? throw new ArgumentNullException("Jwt:Audience"),
         IssuerSigningKey =new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.Key??throw new ArgumentNullException("Jwt:Key")))
     };
 });
