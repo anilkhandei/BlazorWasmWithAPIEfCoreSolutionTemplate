@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Web.API.Template.Data.Authentication
 {
@@ -8,6 +9,5 @@ namespace Web.API.Template.Data.Authentication
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string EmailId { get; set; }
-
     }
 }
