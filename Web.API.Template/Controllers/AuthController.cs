@@ -38,7 +38,7 @@ namespace Web.API.Template.Controllers
                     LastName = model.LastName,
                 };
 
-                var result = await _userManager.CreateAsync(user,model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
@@ -64,11 +64,16 @@ namespace Web.API.Template.Controllers
                     var user = await _userManager.FindByEmailAsync(model.Email);
                     if (user != null)
                     {
+                        var expirationTime = DateTime.Now.AddHours(1);
                         var claims = new[]
                         {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName ?? string.Empty),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+                            new Claim(JwtRegisteredClaimNames.Sub, user.UserName ?? string.Empty),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new Claim(JwtRegisteredClaimNames.Email, model.Email),
+                            new Claim(JwtRegisteredClaimNames.AuthTime, DateTime.UtcNow.ToString()),
+                            new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expirationTime).ToUnixTimeSeconds().ToString()),
+                            new Claim(ClaimTypes.Role,"User")
+                        };
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JwtSettings:Key").Value ?? string.Empty));
                         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

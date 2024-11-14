@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.API.Template.Controllers
@@ -18,6 +19,7 @@ namespace Web.API.Template.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles ="User")]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {

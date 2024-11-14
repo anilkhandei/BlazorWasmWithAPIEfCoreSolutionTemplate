@@ -40,7 +40,10 @@ AddJwtBearer(options =>
         IssuerSigningKey =new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.Key??throw new ArgumentNullException("Jwt:Key")))
     };
 });
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("User", policy => policy.RequireRole("User"));
+});
 // Add services to the container.
 //Allow CORS
 string AllowBlazorWasm = "AllowBlazorWasm";
